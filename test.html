@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="gifSearch" placeholder="Search for GIFs...">
+    <div id="gifResults"></div>
+    
+    <script>
+      const gifSearch = document.getElementById('gifSearch');
+      const gifResults = document.getElementById('gifResults');
+    
+      gifSearch.addEventListener('input', function() {
+        const query = gifSearch.value;
+        if (query.length > 2) {
+          fetch(`https://api.giphy.com/v1/gifs/search?api_key=YOUR_API_KEY&q=${query}&limit=5`)
+            .then(response => response.json())
+            .then(data => {
+              gifResults.innerHTML = '';
+              data.data.forEach(gif => {
+                const img = document.createElement('img');
+                img.src = gif.images.fixed_height.url;
+                img.style.width = '100px';
+                img.onclick = () => insertGif(gif.images.fixed_height.url);
+                gifResults.appendChild(img);
+              });
+            });
+        }
+      });
+    
+      function insertGif(gifUrl) {
+        // Here, insert the selected GIF URL into your chat or textarea
+        console.log("GIF selected: ", gifUrl);
+      }
+    </script>
+    
+
+
+</body>
+</html>

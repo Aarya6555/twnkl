@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Chat</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="login-container glass-effect">
+            <div class="logo">
+                <i class="fas fa-comments"></i>
+                <h1>Random Chat</h1>
+            </div>
+            <div class="profile-upload">
+                <div class="profile-circle">
+                    <img id="profilePreview" src="default-avatar.png" alt="Profile">
+                    <div class="upload-overlay">
+                        <label for="profileInput" class="upload-label">
+                            <i class="fas fa-camera"></i>
+                            <span>Choose Photo</span>
+                        </label>
+                    </div>
+                </div>
+                <input type="file" id="profileInput" accept="image/*" hidden>
+            </div>
+            <div class="input-group">
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Enter username">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-venus-mars"></i>
+                    <select id="gender">
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="transgender">Transgender</option>
+                    </select>
+                </div>
+                <button id="enterChat" class="gradient-btn">
+                    <span>Start Chatting</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Chat Screen -->
+    <div id="mainScreen" class="screen hidden">
+        <div class="app-container glass-effect">
+            <div class="chat-section">
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state">
+                    <div class="empty-state-content">
+                        <!-- User Profile Section -->
+                        <div class="user-profile">
+                            <div class="profile-image">
+                                <img id="userProfileImage" src="default-avatar.png" alt="Your Profile">
+                            </div>
+                            <div class="user-info">
+                                <h3 id="userProfileName">Your Name</h3>
+                                <span id="userProfileGender" class="gender-badge">Gender</span>
+                            </div>
+                        </div>
+                        <div class="profile-divider"></div>
+                        <i class="fas fa-comments"></i>
+                        <h2>Start Random Chat</h2>
+                        <p>Select your preference and start chatting</p>
+                        <div class="preference-select glass-effect">
+                            <i class="fas fa-venus-mars"></i>
+                            <select id="chatPreference" class="custom-select">
+                                <option value="anyone" selected>Connect with Anyone</option>
+                                <option value="male">Male Only</option>
+                                <option value="female">Female Only</option>
+                                <option value="transgender">Transgender Only</option>
+                            </select>
+                        </div>
+                        <button id="startRandomChat" class="gradient-btn">
+                            <i class="fas fa-random"></i>
+                            <span>Start Random Chat</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Area -->
+                <div id="chatArea" class="chat-area hidden">
+                    <div class="chat-header glass-effect">
+                        <div class="partner-info">
+                            <div class="partner-avatar">
+                                <img id="partnerImage" src="default-avatar.png" alt="Partner">
+                                <div class="online-indicator"></div>
+                            </div>
+                            <div class="partner-details">
+                                <h3 id="partnerName">Partner</h3>
+                                <span id="partnerGender" class="gender-badge">Gender</span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="action-btn" id="reportBtn" title="Report User">
+                                <i class="fas fa-flag"></i>
+                            </button>
+                            <button class="action-btn" id="disconnectBtn" title="End Chat">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="messages-container" id="messagesContainer"></div>
+
+                    <div class="chat-input-area glass-effect">
+                        <div class="input-actions">
+                            <div class="attachment-wrapper">
+                                <button class="action-btn" id="attachmentButton">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <div class="attachment-options hidden">
+                                    <button class="attachment-option" onclick="document.getElementById('imageInput').click()">
+                                        <i class="fas fa-image"></i>
+                                    </button>
+                                    <button class="attachment-option" onclick="document.getElementById('videoInput').click()">
+                                        <i class="fas fa-video"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="action-btn" id="gifButton">
+                                <i class="fas fa-gift"></i>
+                            </button>
+                        </div>
+                        <!-- GIF Selector Popup -->
+                        <div id="gifSelector" class="gif-selector hidden">
+                            <div class="gif-search">
+                                <input type="text" id="gifSearchInput" placeholder="Search GIFs...">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="gif-grid" id="gifResults"></div>
+                        </div>
+                        <div class="message-input">
+                            <textarea id="messageInput" placeholder="Type a message..." rows="1"></textarea>
+                        </div>
+                        <button id="sendMessage" class="send-btn gradient-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+                        <input type="file" id="videoInput" accept="video/*" hidden>
+                    </div>
+                </div>
+
+                <!-- Waiting Screen -->
+                <div id="waitingScreen" class="waiting-screen hidden">
+                    <div class="search-loader">
+                        <div class="pulse-ring"></div>
+                        <div class="search-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="search-text">
+                        <h3>Searching for partner...</h3>
+                        <p>This may take a few moments</p>
+                        <button id="cancelSearch" class="cancel-btn">
+                            <i class="fas fa-times"></i>
+                            <span>Cancel Search</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image/Video Viewer Modal -->
+    <div id="mediaModal" class="media-modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="media-container">
+                <img id="modalImage" class="modal-media hidden" src="" alt="Full size image">
+                <video id="modalVideo" class="modal-media hidden" controls></video>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
